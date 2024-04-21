@@ -1,12 +1,16 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]; then
-    echo "Error: No fanspeed argument provided"
-    echo "Usage: $0 <fanspeed>"
-    exit 1
-fi
 
-fanspeed=$1
+# Check if the FANSPEED environment variable is set
+if [ -n "$FANSPEED" ]; then
+    fanspeed=$FANSPEED
+elif [ $# -ge 1 ]; then
+    # Use the first command line argument as fanspeed if provided
+    fanspeed=$1
+else
+    # Default fan speed if neither environmental variable nor command line argument is provided
+    fanspeed=50
+fi
 
 # Check if fanspeed is within the range of 10 to 100
 if ! [[ "$fanspeed" =~ ^[0-9]+$ ]] || ((fanspeed < 10 || fanspeed > 100)); then
